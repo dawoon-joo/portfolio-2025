@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+		rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -16,7 +19,8 @@
 	<link rel="stylesheet" href="/common/css/board.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 	<script src="/common/js/lenis.min.js"></script>
 	<script src="/common/js/scrollreveal.min.js"></script>
 	<script src="/common/js/ScrollToPlugin.min.js"></script>
@@ -24,13 +28,134 @@
 	<script src="/common/js/swiper.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
 	<script src="/common/js/gsap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 	<!-- Slick JS -->
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 	<script src="/common/js/main.js"></script>
 	<script src="/common/js/common.js"></script>
 </head>
+
 <body>
-  
+	<section class="sec main-intro">
+		<div class="intro-area text">
+			<div class="inner">
+				<h1 class="heading">
+					함께 멋진 웹을 만들어보시겠습니까? <br class="pc">
+					4년의 노하우로 <div class="space"></div> 생동감 있는 <br class="pc">
+					인터렉션을 구현하는 퍼블리셔입니다.
+				</h1>
+			</div>
+		</div>
+		<div class="intro-area bg">
+			<div class="sticky">
+				<div class="bg-img">
+					<img src="/images/intro-bg.png" alt="">
+				</div>
+			</div>
+		</div>   
+	</section>
+	<section class="sec"></section>
 </body>
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', ()=> {
+		careersMotion();
+	})
+	const introMotion = (triggerClass, isMobile) => {
+		const section = document.querySelector('.main-intro');
+		const box = section.querySelector('.space');
+		const sticky = section.querySelector('.sticky');
+		const heading = section.querySelector('.heading');
+		const bgWrap = sticky.querySelectorAll('.bg-img');
+		const tl = gsap.timeline();
+		const disableScroll = () => {
+			document.body.style.overflow = 'hidden';
+			if (window.lenis) {
+				window.lenis.stop();
+			}
+		};
+		const enableScroll = () => {
+			document.body.style.overflow = '';
+			if (window.lenis) {
+				window.lenis.start();
+			}
+		};
+		function calculateBoxPosition() {
+			const contentArea = document.querySelector('.intro-area');
+			const boxRect = box.getBoundingClientRect();
+			const contentRect = contentArea.getBoundingClientRect();
+
+			const topPercent = ((boxRect.top - contentRect.top) / contentRect.height) * 100;
+			const leftPercent = ((boxRect.left - contentRect.left) / contentRect.width) * 100;
+
+			return {
+				topPercent: topPercent,
+				leftPercent: leftPercent
+			};
+		}
+		function updateBgItemSize() {
+			const boxRect = box.getBoundingClientRect();
+			const bgWrapRect = sticky.getBoundingClientRect();
+			const initialPosition = calculateBoxPosition();
+
+			return {
+				width: (boxRect.width / bgWrapRect.width) * 100,
+				height: (boxRect.height / bgWrapRect.height) * 100,
+				top: initialPosition.topPercent,
+				left: initialPosition.leftPercent
+			};
+		}
+		disableScroll();
+		// 초기 설정
+		gsap.set(box, { maxWidth: '20%' });
+		const size = updateBgItemSize();
+		gsap.set(box, { maxWidth: '0%' });
+		gsap.set(heading, { autoAlpha: 0, y: '30%'});
+		gsap.set(bgWrap, {
+			clipPath: 'inset(0 50%)',
+			position: 'absolute',
+			width: size.width + '%',
+			height: size.height + '%',
+			top: size.top + '%',
+			left: size.left + '%',
+		});
+		gsap.to(heading, { autoAlpha: 1, y: 0, duration: 1, ease: 'power2.inOut',})
+		gsap.to(box, {
+			maxWidth: '20%',
+			duration: 1,
+			delay: 1,
+			ease: 'power2.inOut',
+			onComplete: ()=> {
+				initScrollTriggers();
+				enableScroll();
+			}
+		});
+		gsap.to(bgWrap, { clipPath: 'inset(0% 0%)',  duration: 1, delay: 1, ease: 'power2.inOut',})
+		function initScrollTriggers() {
+			ScrollTrigger.create({
+				trigger: triggerClass,
+				start: "top top",
+				end: "+=200%",
+				scrub: 1,
+				animation: tl,
+				invalidateOnRefresh: true,
+				force3D: true,
+				ease: 'none'
+			});    
+			tl.addLabel('Move1', '+=0')
+				.to(bgWrap, { width: '100%', height: '100%', top: '0%', left: '0%'}, 'Move1')
+				.to(heading, { autoAlpha: 0, y: '30%'}, 'Move1')
+		}
+	}
+	const careersMotion = () => {
+		let mm = gsap.matchMedia();
+
+		mm.add({
+			isMobile: "(max-width: 767px)",
+			isDesktop: "(min-width: 768px)"
+		}, (context) => {
+			let { isMobile, isDesktop } = context.conditions;
+			introMotion('.program-intro', isMobile)
+		});
+	}
+</script>
 </html>
