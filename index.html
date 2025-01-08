@@ -48,24 +48,79 @@
 		</div>
 		<div class="intro-area bg">
 			<div class="sticky">
-				<div class="bg-img">
-					<img src="/images/intro-bg.png" alt="">
+				<div class="intro-wrap">
+					<div class="bg-overlay"></div>
+					<div class="intro-content">
+						<div class="inner">
+							<h2 class="heading">저는 4년차 퍼블리셔 <br class="pc"> 주다운입니다.</h2>
+							<p class="desc">
+								CSS와 JavaScript를 활용한 동적 모션을 좋아하고 <br class="pc">
+								코딩을 쉽고, 재밌게 남다르게 표현하는 걸 좋아합니다.
+							</p>
+							<p class="desc">
+								언제나 최신동향을 따라가려 노력하며, 배운것은 나눠야 한다는 주의를 가지고 있습니다. <br class="pc">
+								그리고, 사용자를 행복하게 해주는 서비스를 만드는 것을 즐깁니다.
+							</p>
+							<p class="desc">
+								저는 제 일을 좋아합니다. 좋아하니까 즐기게 되고, 더 잘하고 싶어집니다. <br class="pc">
+								최근에 컴포넌트 단위의 유지보수에 관심이 많아서 <br class="pc">
+								React, Nodejs를 공부중에 있습니다.
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>   
+		</div>
 	</section>
-	<section class="sec"></section>
+	<section class="sec main-portfolio">
+		<div class="portfolio-area">
+			<div class="inner">
+				<div class="flex-box">
+					<div class="col"><span class="text split">PORTFOLIO</span></div>
+					<div class="col"><span class="text split">PROJECT</span></div>
+				</div>
+			</div>
+		</div>
+	</section>
 </body>
 <script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', ()=> {
+	document.addEventListener('DOMContentLoaded', () => {
 		careersMotion();
 	})
+	const splitText = () => {
+		const textElements = document.querySelectorAll('.split');
+		textElements.forEach(textElement => {
+			const nodes = Array.from(textElement.childNodes);
+			let newHtml = '';
+
+			nodes.forEach(node => {
+				if (node.nodeType === Node.TEXT_NODE) {
+					const chars = node.textContent.split('');
+					newHtml += chars.map(char =>
+						char === ' ' ?
+							'<span class="word">&nbsp;</span>' :
+							`<span class="word">${char}</span>`
+					).join('');
+				} else if (node.nodeName === 'BR') {
+					// 기존 br의 클래스 유지
+					const className = node.className;
+					newHtml += `<br${className ? ` class="${className}"` : ''}>`;
+				}
+			});
+
+			textElement.innerHTML = newHtml;
+		});
+	};
 	const introMotion = (triggerClass, isMobile) => {
 		const section = document.querySelector('.main-intro');
 		const box = section.querySelector('.space');
 		const sticky = section.querySelector('.sticky');
 		const heading = section.querySelector('.heading');
-		const bgWrap = sticky.querySelectorAll('.bg-img');
+		const bgWrap = sticky.querySelectorAll('.intro-wrap');
+		const overlay = sticky.querySelector('.bg-overlay');
+		const content = sticky.querySelector('.intro-content');
+		const contentHeading = content.querySelector('.heading');
+		const contentDesc = content.querySelectorAll('.desc');
 		const tl = gsap.timeline();
 		const disableScroll = () => {
 			document.body.style.overflow = 'hidden';
@@ -109,7 +164,9 @@
 		gsap.set(box, { maxWidth: '20%' });
 		const size = updateBgItemSize();
 		gsap.set(box, { maxWidth: '0%' });
-		gsap.set(heading, { autoAlpha: 0, y: '30%'});
+		gsap.set(heading, { autoAlpha: 0, y: '30%' });
+		gsap.set(contentHeading, { autoAlpha: 0, y: '50%' });
+		gsap.set(contentDesc, { autoAlpha: 0, y: '50%' });
 		gsap.set(bgWrap, {
 			clipPath: 'inset(0 50%)',
 			position: 'absolute',
@@ -118,33 +175,74 @@
 			top: size.top + '%',
 			left: size.left + '%',
 		});
-		gsap.to(heading, { autoAlpha: 1, y: 0, duration: 1, ease: 'power2.inOut',})
+		gsap.to(heading, { autoAlpha: 1, y: 0, duration: 1, ease: 'power2.inOut', })
 		gsap.to(box, {
 			maxWidth: '20%',
 			duration: 1,
 			delay: 1,
 			ease: 'power2.inOut',
-			onComplete: ()=> {
+			onComplete: () => {
 				initScrollTriggers();
 				enableScroll();
 			}
 		});
-		gsap.to(bgWrap, { clipPath: 'inset(0% 0%)',  duration: 1, delay: 1, ease: 'power2.inOut',})
+		gsap.to(bgWrap, { clipPath: 'inset(0% 0%)', duration: 1, delay: 1, ease: 'power2.inOut', })
 		function initScrollTriggers() {
 			ScrollTrigger.create({
 				trigger: triggerClass,
 				start: "top top",
-				end: "+=200%",
+				end: "+=400%",
 				scrub: 1,
 				animation: tl,
 				invalidateOnRefresh: true,
 				force3D: true,
-				ease: 'none'
-			});    
+				ease: 'none',
+				onUpdate: (self) => {
+					if (self.progress > 0.1) {
+						document.documentElement.setAttribute('data-theme', 'dark');
+					} else {
+						document.documentElement.setAttribute('data-theme', 'light');
+					}
+				}
+			});
 			tl.addLabel('Move1', '+=0')
-				.to(bgWrap, { width: '100%', height: '100%', top: '0%', left: '0%'}, 'Move1')
-				.to(heading, { autoAlpha: 0, y: '30%'}, 'Move1')
+				.to(bgWrap, { width: '100%', height: '100%', top: '0%', left: '0%', duration: 1 }, 'Move1')
+				.to(heading, { autoAlpha: 0, y: '30%' }, 'Move1')
+				.addLabel('Move2', '+=0')
+				.to(overlay, { opacity: 1 }, 'Move2')
+				.addLabel('Move3', '+=0')
+				.to(contentHeading, { autoAlpha: 1, y: 0 }, 'Move3')
+				.to(contentDesc[0], { autoAlpha: 1, y: 0 }, 'Move3+=0.1')
+				.to(contentDesc[1], { autoAlpha: 1, y: 0 }, 'Move3+=0.2')
+				.to(contentDesc[2], { autoAlpha: 1, y: 0 }, 'Move3+=0.3')
 		}
+	}
+	const portfolioMotion = (triggerClass, isMobile) => {
+		const section = document.querySelector('.main-portfolio');
+		const textWrap = section.querySelectorAll('.col .text');
+		const text = section.querySelectorAll('.word');
+		gsap.set(text, { opacity: '0.1' });
+		gsap.set(textWrap, { autoAlpha: 0, y: '50%' });
+
+		const motionIn = () => {
+			gsap.killTweensOf([text, textWrap]);
+			gsap.to(text, { opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.inOut" });
+			gsap.to(textWrap, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.inOut" });
+		}
+		const motionOut = () => {
+			gsap.killTweensOf([text, textWrap]);
+			gsap.to(text, { opacity: 0.1,});
+			gsap.to(textWrap, { autoAlpha: 0, y: 50,});
+		}
+		ScrollTrigger.create({
+			trigger: section,
+			start: "top center",
+			markers: true,
+			onEnter: motionIn,
+			onLeave: motionOut,
+			onEnterBack: motionIn,
+			onLeaveBack: motionOut
+		});
 	}
 	const careersMotion = () => {
 		let mm = gsap.matchMedia();
@@ -154,8 +252,11 @@
 			isDesktop: "(min-width: 768px)"
 		}, (context) => {
 			let { isMobile, isDesktop } = context.conditions;
+			splitText();
 			introMotion('.program-intro', isMobile)
+			portfolioMotion('.main-portfolio', isMobile)
 		});
 	}
 </script>
+
 </html>
