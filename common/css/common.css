@@ -48,14 +48,16 @@ figure img { display: block; }
 .intro-area.bg .sticky { width: 100%; height: 100vh; } 
 .intro-area.bg .intro-wrap { background: url(/images/intro-bg1.png) no-repeat center 60%/90% auto; } 
 .intro-area.bg .bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); opacity: 0; } 
-.intro-area.bg .intro-content { position: relative; width: 100%; height: 100%;}
-.intro-area.bg .intro-content .inner { height: 100%; display: flex; flex-direction: column; justify-content: center;}
-.intro-area.bg .intro-content .heading { margin-bottom: 40px;}
-.intro-area.bg .intro-content .desc + .desc { margin-top: 30px;}
+.intro-area.bg .intro-content { position: relative; width: 100%; height: 100%; } 
+.intro-area.bg .intro-content .inner { height: 100%; display: flex; flex-direction: column; justify-content: center; } 
+.intro-area.bg .intro-content .heading { margin-bottom: 40px; } 
+.intro-area.bg .intro-content .desc + .desc { margin-top: 30px; } 
 
 /* portfolio */
-.main-portfolio { position: relative; width: 100%; height: 100vh; }
-.portfolio-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
-.portfolio-area .inner { height: 100%;}
-.portfolio-area .flex-box { width: 100%; height: 100%; gap: 50px; align-items: center;}
-.portfolio-area .flex-box .text { font-size: 8vw; font-weight: bold;}
+.main-portfolio { position: relative; width: 100%; height: 100vh; overflow: hidden;} 
+.main-portfolio .inner { height: 100%; } 
+.portfolio-area.intro { position: absolute; top: 0; left: 0; width: 100%; height: 100%; } 
+.portfolio-area .flex-box { width: 100%; height: 100%; gap: 50px; align-items: center; justify-content: center;} 
+.portfolio-area .flex-box .text { font-size: 9vw; font-weight: bold; } 
+.portfolio-area.list { width: 100%; height: 100%; display: flex; gap: 50px; align-items: center;}
+.portfolio-area.list article { flex: 0 0 auto; width: 400px; height: 400px; background: #fff; }

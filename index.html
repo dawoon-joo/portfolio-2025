@@ -73,12 +73,26 @@
 		</div>
 	</section>
 	<section class="sec main-portfolio">
-		<div class="portfolio-area">
-			<div class="inner">
+		<div class="inner">
+			<div class="portfolio-area intro">
 				<div class="flex-box">
 					<div class="col"><span class="text split">PORTFOLIO</span></div>
 					<div class="col"><span class="text split">PROJECT</span></div>
 				</div>
+			</div>
+			<div class="portfolio-area list">
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
+				<article>test1</article>
 			</div>
 		</div>
 	</section>
@@ -221,28 +235,82 @@
 		const section = document.querySelector('.main-portfolio');
 		const textWrap = section.querySelectorAll('.col .text');
 		const text = section.querySelectorAll('.word');
+		const inner = section.querySelector('.inner');
+		const articles = gsap.utils.toArray('.portfolio-area.list article');
+		const introArea = section.querySelector('.portfolio-area.intro');
+
+		// 텍스트 초기화
 		gsap.set(text, { opacity: '0.1' });
 		gsap.set(textWrap, { autoAlpha: 0, y: '50%' });
 
-		const motionIn = () => {
+		// 텍스트 모션
+		const textIn = () => {
 			gsap.killTweensOf([text, textWrap]);
 			gsap.to(text, { opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.inOut" });
 			gsap.to(textWrap, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.inOut" });
 		}
-		const motionOut = () => {
+		const textOut = () => {
 			gsap.killTweensOf([text, textWrap]);
-			gsap.to(text, { opacity: 0.1,});
-			gsap.to(textWrap, { autoAlpha: 0, y: 50,});
+			gsap.to(text, { opacity: 0.1 });
+			gsap.to(textWrap, { autoAlpha: 0, y: 50 });
 		}
+
+		// 텍스트 트리거
 		ScrollTrigger.create({
-			trigger: section,
+			trigger: introArea,
 			start: "top center",
 			markers: true,
-			onEnter: motionIn,
-			onLeave: motionOut,
-			onEnterBack: motionIn,
-			onLeaveBack: motionOut
+			onEnter: textIn,
+			onLeaveBack: textOut
 		});
+
+		// 가로 스크롤 타임라인
+		const horizontalTl = gsap.timeline({
+			scrollTrigger: {
+				trigger: triggerClass,
+				start: "top top",
+				end: "+=800%",
+				pin: true,
+				scrub: 1,
+				markers: true
+			}
+		});
+
+		const getVisibleArticles = () => {
+			return articles.filter(article => {
+				const rect = article.getBoundingClientRect();
+				return rect.left < window.innerWidth && rect.right > 0;
+			});
+		};
+
+		const visibleArticles = getVisibleArticles();
+		// 가로 스크롤 모션
+		horizontalTl
+			.set(visibleArticles, { scaleY: 0 })  // 보이는 것만 초기화
+			.fromTo('.portfolio-area.intro .col',
+				{ y: 0 },
+				{ y: (i) => i === 0 ? '-100%' : '100%', duration: 5, ease: "power2.inOut" }
+			)
+			.to(visibleArticles, { 
+				scaleY: 1,
+				duration: 0.8,
+				stagger: {
+					each: (5 * 0.4) / visibleArticles.length,
+					from: "start"
+				},
+				ease: "power2.inOut"
+			}, '<+=2')
+			.to(articles, { 
+				x: () => {
+					const innerWidth = inner.offsetWidth;
+					const articlesWidth = articles[0].offsetWidth * articles.length;
+					const gap = 50 * (articles.length - 1);
+					const endPosition = articlesWidth + gap - innerWidth;
+					return -endPosition;
+				},
+				ease: "none",
+				duration: 5
+			});
 	}
 	const careersMotion = () => {
 		let mm = gsap.matchMedia();
