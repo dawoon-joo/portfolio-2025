@@ -1,0 +1,7 @@
+.intro { width: 100%; height: 100vh; background: #fff; position: relative; z-index: 10;}
+.intro-text { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.2); backdrop-filter: blur(1px); position: relative; z-index: 1; text-align: center;;}
+.intro-text .split { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: max-content;}
+.intro-circle { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden;}
+.intro-circle .guide-circle { position: absolute; width: 200%; aspect-ratio: 1/1; top: 80%; left: 50%; transform: translateX(-50%);}
+.intro-circle .guide-circle article { position: absolute; width: 12%; height: 400px; transform-origin: center; border: 1px solid #ddd; text-align: center;}
+.intro-circle .guide-circle article .text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); white-space: nowrap;}

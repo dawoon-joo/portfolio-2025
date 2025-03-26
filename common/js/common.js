@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   language();
   footerDropDown();
   scrollBtn();
+  splitText();
   sublinkWrap();
 });
 
@@ -167,6 +168,7 @@ function scrollBtn() {
 
 const splitText = () => {
   const textElements = document.querySelectorAll('.split');
+  if(!textElements) return;
   textElements.forEach(textElement => {
     const nodes = Array.from(textElement.childNodes);
     let newHtml = '';
