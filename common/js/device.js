@@ -40,7 +40,6 @@ class Device {
       this.previousState.isDesktop !== this.isDesktop;
 
     if (hasDeviceTypeChanged) {
-      console.log('Device type changed:', this.isMobile, this.isTablet, this.isDesktop);
       this.onDeviceChange();
     }
   }

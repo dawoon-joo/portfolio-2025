@@ -105,6 +105,7 @@
 	</header>
 	<main>
 		<div class="intro">
+			<div class="bg"></div>
 			<div class="intro-text">
 				<h2 class="title">
 					<p class="split">Creative Web Publisher</p>
@@ -112,36 +113,10 @@
 					<p class="split">인터랙티브한 사용자 경험을 만들어갑니다.</p>
 				</h2>
 			</div>
-			<div class="intro-circle">
-				<div class="guide-circle">
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-					<article>
-						<div class="text">테스트1</div>
-					</article>
-				</div>
-			</div>
 		</div>
-		<section class="sec"></section>
+		<section class="sec sec1">
+			<h1>안녕하세요 저는 주다운입니다. 만나서 반갑습니다.</h1>
+		</section>
 		<section class="sec"></section>
 		<section class="sec"></section>
 		<section class="sec"></section>
@@ -235,71 +210,152 @@
 	const initCircleLayout = () => {
 		const getElements = () => ({
 			intro: document.querySelector('.intro'),
+			sec1: document.querySelector('.sec1'),
+			bg: document.querySelector('.intro .bg'),
 			guideCircle: document.querySelector('.guide-circle'),
 			articles: document.querySelectorAll('.guide-circle article'),
 			split: document.querySelectorAll('.intro-text .split'),
 		});
+		
+		// 등장 효과 (이미지가 보이게 됨)
+		const createAppearMaskEffect = (progress) => {
+			const config = {
+				blockCount: 30,
+				staggerFactor: 2
+			};
 
-		function positionArticles() {
-			const { guideCircle, articles } = getElements();
-			const radius = guideCircle.offsetWidth / 2;
-			const spacing = articles[0].offsetWidth + 100;
-			let maxHeight = 0;
-			articles.forEach(article => {
-				const height = article.offsetHeight;
-				if (height > maxHeight) {
-					maxHeight = height;
+			const blockWidth = 100 / config.blockCount;
+			const adjustedProgress = (progress * (config.blockCount / config.staggerFactor)) / (config.blockCount / (config.staggerFactor + 1));
+
+			const maskPatterns = Array.from({ length: config.blockCount }, (_, index) => {
+				const blockStart = (index * blockWidth).toFixed(5);
+				const blockEnd = ((index + 1) * blockWidth).toFixed(5);
+
+				const appearanceThreshold = (config.blockCount - index - 1) / config.blockCount;
+				const blockProgress = Math.max(0, Math.min(1,
+					(adjustedProgress - appearanceThreshold) * config.staggerFactor
+				));
+
+				const blackEndPosition = (parseFloat(blockStart) + blockProgress * blockWidth).toFixed(5);
+				const finalBlackEnd = Math.min(parseFloat(blackEndPosition), parseFloat(blockEnd)).toFixed(5);
+
+				return `black ${blockStart}%, black ${finalBlackEnd}%, transparent ${finalBlackEnd}%, transparent ${blockEnd}%`;
+			});
+
+			return maskPatterns.join(', ');
+		};
+		// 퇴장 효과 (이미지가 사라짐)
+		const createDisappearMaskEffect = (progress) => {
+			const config = {
+				blockCount: 30,
+				staggerFactor: 2
+			};
+
+			const blockWidth = 100 / config.blockCount;
+			const adjustedProgress = (progress * (config.blockCount / config.staggerFactor)) / (config.blockCount / (config.staggerFactor + 1));
+
+			const maskPatterns = Array.from({ length: config.blockCount }, (_, index) => {
+				const blockStart = (index * blockWidth).toFixed(5);
+				const blockEnd = ((index + 1) * blockWidth).toFixed(5);
+
+				// 왼쪽에서 오른쪽으로 사라지게
+				const appearanceThreshold = index / config.blockCount;
+				const blockProgress = Math.max(0, Math.min(1,
+					(adjustedProgress - appearanceThreshold) * config.staggerFactor
+				));
+
+				const transparentEndPosition = (parseFloat(blockStart) + blockProgress * blockWidth).toFixed(5);
+				const finalTransparentEnd = Math.min(parseFloat(transparentEndPosition), parseFloat(blockEnd)).toFixed(5);
+
+				return `transparent ${blockStart}%, transparent ${finalTransparentEnd}%, black ${finalTransparentEnd}%, black ${blockEnd}%`;
+			});
+
+			return maskPatterns.join(', ');
+		};
+
+		const runMaskAnimation = (element, maskType) => {
+			const { intro, bg, guideCircle, articles, split, sec1 } = getElements();
+			// gsap.set(element, { autoAlpha: 0 });
+
+			gsap.to({}, {
+				duration: 1.5,
+				onUpdate: function () {
+					const progress = this.progress();
+					const maskPattern = maskType(progress);
+					element.style.setProperty('--mask-section', maskPattern);
+				},
+				onComplete: () => {
+					document.body.style.overflow = 'visible';
+					lenis.start();
+					intro.remove();
 				}
 			});
 
-			articles.forEach((article, index) => {
-				article.style.height = `${maxHeight}px`;
-				const arcLength = spacing * index;
-				const degrees = -90 + (arcLength / radius) * (180 / Math.PI);
-				const radians = degrees * (Math.PI / 180);
-
-				gsap.set(article, {
-					left: '50%',
-					top: '50%',
-					x: Math.cos(radians) * radius,
-					y: Math.sin(radians) * radius,
-					rotation: index === 0 ? 0 : degrees + 90,
-					xPercent: -50,
-					yPercent: -50
-				});
+			gsap.to(element, {
+				autoAlpha: 1,
+				duration: 0.1
 			});
-		}
+		};
+
+		// 	const { guideCircle, articles } = getElements();
+		// 	const radius = guideCircle.offsetWidth / 2;
+		// 	const spacing = articles[0].offsetWidth + 400;
+		// 	let maxHeight = 0;
+		// 	articles.forEach(article => {
+		// 		const height = article.offsetHeight;
+		// 		if (height > maxHeight) {
+		// 			maxHeight = height;
+		// 		}
+		// 	});
+
+		// 	articles.forEach((article, index) => {
+		// 		article.style.height = `${maxHeight}px`;
+		// 		const arcLength = spacing * index;
+		// 		const degrees = -90 + (arcLength / radius) * (180 / Math.PI);
+		// 		const radians = degrees * (Math.PI / 180);
+
+		// 		gsap.set(article, {
+		// 			left: '50%',
+		// 			top: '50%',
+		// 			x: Math.cos(radians) * radius,
+		// 			y: Math.sin(radians) * radius,
+		// 			rotation: index === 0 ? 0 : degrees + 90,
+		// 			xPercent: -50,
+		// 			yPercent: -50
+		// 		});
+		// 	});
+		// }
 
 		function initScrollAnimation() {
-			const { intro, guideCircle, articles, split } = getElements();
-			const radius = guideCircle.offsetWidth / 2;
-			const spacing = articles[0].offsetWidth + 100;
-
-			const lastIndex = articles.length - 2;
-			const arcLength = spacing * lastIndex;
-			const lastArticleDegrees = -90 + (arcLength / radius) * (180 / Math.PI);
-			const finalDegrees = -(lastArticleDegrees + 90);
-			console.log(finalDegrees	);
+			const { intro, bg, guideCircle, articles, split, sec1 } = getElements();
 			const tl = gsap.timeline();
 			split.forEach(item => {
-				gsap.set(item.querySelectorAll('.word'), { autoAlpha: 0, y: 100 });
+				gsap.set(item.querySelectorAll('.word'), { autoAlpha: 0, y: 0 });
 			});
-			tl.to(guideCircle, { rotation: finalDegrees, duration: 10, }, 'intro')
-				.to(split[0].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: 0.1 }, 'intro')
-				.to(split[0].querySelectorAll('.word'), { autoAlpha: 0, y: -50, ease: 'power2.inOut', stagger: 0.1 }, 'intro+=2')
-				.to(split[1].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: 0.1 }, 'intro+=4'	)
-				.to(split[1].querySelectorAll('.word'), { autoAlpha: 0, y: -50, ease: 'power2.inOut', stagger: 0.1 }, 'intro+=6')
-				.to(split[2].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: 0.1 }, 'intro+=8')
+			const totalDuration = 8;
+			const segmentDuration = totalDuration / 3;
+			const staggerTime = 0.05;
+
+			document.body.style.overflow = 'hidden';
+			lenis.stop();
+			
+			tl.to(split[0].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro')
+				.to(split[0].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration - 1))
+				.to(split[1].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + segmentDuration)
+				.to(split[1].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration * 2 - 1))
+				.to(split[2].querySelectorAll('.word'), {
+					autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime, onComplete: () => {
+						runMaskAnimation(intro, createDisappearMaskEffect);
+					}
+				}, 'intro+=' + (segmentDuration * 2))
 		}
 
 		function reset() {
 			ScrollTrigger.getAll().forEach(st => st.kill());
-			gsap.set('.guide-circle', { clearProps: 'all' });
-			positionArticles();
 			initScrollAnimation();
 		}
 
-		positionArticles();
+		// positionArticles();
 		initScrollAnimation();
 		window.addEventListener('resize', reset);
 	}

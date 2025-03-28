@@ -1,7 +1,21 @@
-.intro { width: 100%; height: 100vh; background: #fff; position: relative; z-index: 10;}
-.intro-text { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.2); backdrop-filter: blur(1px); position: relative; z-index: 1; text-align: center;;}
+.intro { width: 100%; height: 100vh; background: #fff; position: absolute; top: 0; left: 0; z-index: 10; background-position: center; background-size: cover; -webkit-mask-image: linear-gradient(90deg, var(--mask-section)); mask-image: linear-gradient(90deg, var(--mask-section));;}
+.intro-text { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.5); backdrop-filter: blur(2px); position: relative; z-index: 1; text-align: center;;}
 .intro-text .split { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: max-content;}
 .intro-circle { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden;}
-.intro-circle .guide-circle { position: absolute; width: 200%; aspect-ratio: 1/1; top: 80%; left: 50%; transform: translateX(-50%);}
-.intro-circle .guide-circle article { position: absolute; width: 12%; height: 400px; transform-origin: center; border: 1px solid #ddd; text-align: center;}
+.intro-circle .guide-circle { position: absolute; width: 200%; aspect-ratio: 1/1; top: 70%; left: 50%; transform: translateX(-50%);}
+.intro-circle .guide-circle article { position: absolute; width: 12%; height: 500px; transform-origin: center; border: 1px solid #ddd; text-align: center; background-position: center; background-size: cover; background-repeat: no-repeat;}
+.intro-circle .guide-circle article:nth-child(1) { background-image: url(/images/main/project-thumb1.jpg);}
+.intro-circle .guide-circle article:nth-child(2) { background-image: url(/images/main/project-thumb2.jpg);}
+.intro-circle .guide-circle article:nth-child(3) { background-image: url(/images/main/project-thumb3.jpg);}
+.intro-circle .guide-circle article:nth-child(4) { background-image: url(/images/main/project-thumb4.jpg);}
+.intro-circle .guide-circle article:nth-child(5) { background-image: url(/images/main/project-thumb5.jpg);}
+.intro-circle .guide-circle article:nth-child(6) { background-image: url(/images/main/project-thumb6.jpg);}
+.intro-circle .guide-circle article:nth-child(7) { background-image: url(/images/main/project-thumb7.jpg);}
+.intro-circle .guide-circle article:nth-child(8) { background-image: url(/images/main/project-thumb8.jpg);}
+.intro-circle .guide-circle article:nth-child(9) { background-image: url(/images/main/project-thumb9.jpg);}
+.intro-circle .guide-circle article:nth-child(10) { background-image: url(/images/main/project-thumb10.jpg);}
+
+
 .intro-circle .guide-circle article .text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); white-space: nowrap;}
+
+.sec.sec1 { background-color: #161616 !important; display: flex; align-items: center; justify-content: center; color: #fff;;}
