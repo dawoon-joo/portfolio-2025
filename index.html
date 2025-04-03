@@ -214,6 +214,7 @@
 			bg: document.querySelector('.intro .bg'),
 			guideCircle: document.querySelector('.guide-circle'),
 			articles: document.querySelectorAll('.guide-circle article'),
+			textBoxs: document.querySelector('.intro-text'),
 			split: document.querySelectorAll('.intro-text .split'),
 		});
 		
@@ -245,7 +246,7 @@
 			return maskPatterns.join(', ');
 		};
 		// 퇴장 효과 (이미지가 사라짐)
-		const createDisappearMaskEffect = (progress) => {
+		const createDisappearMaskEffect = (progress, direction = 'ltr') => { // 'ltr' (left to right) 또는 'rtl' (right to left)
 			const config = {
 				blockCount: 30,
 				staggerFactor: 2
@@ -258,76 +259,59 @@
 				const blockStart = (index * blockWidth).toFixed(5);
 				const blockEnd = ((index + 1) * blockWidth).toFixed(5);
 
-				// 왼쪽에서 오른쪽으로 사라지게
-				const appearanceThreshold = index / config.blockCount;
+				// direction에 따라 다른 방향으로 처리
+				const appearanceThreshold = direction === 'ltr'
+					? index / config.blockCount
+					: (config.blockCount - 1 - index) / config.blockCount;
+
 				const blockProgress = Math.max(0, Math.min(1,
 					(adjustedProgress - appearanceThreshold) * config.staggerFactor
 				));
 
-				const transparentEndPosition = (parseFloat(blockStart) + blockProgress * blockWidth).toFixed(5);
-				const finalTransparentEnd = Math.min(parseFloat(transparentEndPosition), parseFloat(blockEnd)).toFixed(5);
-
-				return `transparent ${blockStart}%, transparent ${finalTransparentEnd}%, black ${finalTransparentEnd}%, black ${blockEnd}%`;
+				if (direction === 'ltr') {
+					// 왼쪽에서 오른쪽으로
+					const transparentEndPosition = (parseFloat(blockStart) + blockProgress * blockWidth).toFixed(5);
+					const finalTransparentEnd = Math.min(parseFloat(transparentEndPosition), parseFloat(blockEnd)).toFixed(5);
+					return `transparent ${blockStart}%, transparent ${finalTransparentEnd}%, black ${finalTransparentEnd}%, black ${blockEnd}%`;
+				} else {
+					// 오른쪽에서 왼쪽으로
+					const transparentStartPosition = (parseFloat(blockEnd) - blockProgress * blockWidth).toFixed(5);
+					const finalTransparentStart = Math.max(parseFloat(transparentStartPosition), parseFloat(blockStart)).toFixed(5);
+					return `black ${blockStart}%, black ${finalTransparentStart}%, transparent ${finalTransparentStart}%, transparent ${blockEnd}%`;
+				}
 			});
 
 			return maskPatterns.join(', ');
 		};
 
-		const runMaskAnimation = (element, maskType) => {
-			const { intro, bg, guideCircle, articles, split, sec1 } = getElements();
-			// gsap.set(element, { autoAlpha: 0 });
-
-			gsap.to({}, {
-				duration: 1.5,
-				onUpdate: function () {
-					const progress = this.progress();
-					const maskPattern = maskType(progress);
-					element.style.setProperty('--mask-section', maskPattern);
-				},
-				onComplete: () => {
-					document.body.style.overflow = 'visible';
-					lenis.start();
-					intro.remove();
-				}
-			});
-
-			gsap.to(element, {
-				autoAlpha: 1,
-				duration: 0.1
+		const runMaskAnimation = (element, maskType, direction = 'ltr') => {
+			return new Promise((resolve, reject) => {
+				const { intro, bg, textBoxs, guideCircle, articles, split, sec1 } = getElements();
+				// gsap.set(element, { autoAlpha: 0 });
+	
+				gsap.to({}, {
+					duration: 1.5,
+					onUpdate: function () {
+						const progress = this.progress();
+						const maskPattern = maskType(progress, direction);
+						element.style.setProperty('--mask-section', maskPattern);
+					},
+					onComplete: () => {
+						document.body.style.overflow = 'visible';
+						lenis.start();
+						resolve();
+					}
+				});
+	
+				gsap.to(element, {
+					autoAlpha: 1,
+					duration: 0.1
+				});
 			});
 		};
 
-		// 	const { guideCircle, articles } = getElements();
-		// 	const radius = guideCircle.offsetWidth / 2;
-		// 	const spacing = articles[0].offsetWidth + 400;
-		// 	let maxHeight = 0;
-		// 	articles.forEach(article => {
-		// 		const height = article.offsetHeight;
-		// 		if (height > maxHeight) {
-		// 			maxHeight = height;
-		// 		}
-		// 	});
-
-		// 	articles.forEach((article, index) => {
-		// 		article.style.height = `${maxHeight}px`;
-		// 		const arcLength = spacing * index;
-		// 		const degrees = -90 + (arcLength / radius) * (180 / Math.PI);
-		// 		const radians = degrees * (Math.PI / 180);
-
-		// 		gsap.set(article, {
-		// 			left: '50%',
-		// 			top: '50%',
-		// 			x: Math.cos(radians) * radius,
-		// 			y: Math.sin(radians) * radius,
-		// 			rotation: index === 0 ? 0 : degrees + 90,
-		// 			xPercent: -50,
-		// 			yPercent: -50
-		// 		});
-		// 	});
-		// }
-
 		function initScrollAnimation() {
-			const { intro, bg, guideCircle, articles, split, sec1 } = getElements();
+			const { intro, bg, guideCircle, articles, textBoxs, split, sec1 } = getElements();
 			const tl = gsap.timeline();
 			split.forEach(item => {
 				gsap.set(item.querySelectorAll('.word'), { autoAlpha: 0, y: 0 });
@@ -344,10 +328,15 @@
 				.to(split[1].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + segmentDuration)
 				.to(split[1].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration * 2 - 1))
 				.to(split[2].querySelectorAll('.word'), {
-					autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime, onComplete: () => {
-						runMaskAnimation(intro, createDisappearMaskEffect);
+					autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime, onComplete: async () => {
+						await runMaskAnimation(textBoxs, createDisappearMaskEffect, 'ltr');
+						gsap.delayedCall(0.5, async () => { 
+							await runMaskAnimation(intro, createDisappearMaskEffect, 'rtl');
+						});
 					}
 				}, 'intro+=' + (segmentDuration * 2))
+				// .to({}, { onComplete: () => { runMaskAnimation(intro, createDisappearMaskEffect); }})
+				// .to(split[2].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime, }, 'intro+=' + (segmentDuration * 2))
 		}
 
 		function reset() {
