@@ -1,8 +1,6 @@
 @charset "utf-8";
 /* 퍼오고나서 지우기 ===== */
 .sec { height: 100vh; background: lightcoral;}
-.sec:nth-child(2) { background: #f7f7f7;}
-.sec:nth-child(3) { background: #fff;}
 /* 퍼오고나서 지우기 ===== */
 :root {
   --primary-color: #000;
