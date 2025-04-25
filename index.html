@@ -352,7 +352,7 @@
 						await runMaskAnimation(textBoxs, createDisappearMaskEffect, 'ltr');
 						gsap.delayedCall(0.5, async () => { 
 							await runMaskAnimation(intro, createDisappearMaskEffect, 'rtl');
-							intro.remove();
+							// intro.remove();
 						});
 					}
 				}, 'intro+=' + (segmentDuration * 2))
