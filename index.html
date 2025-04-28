@@ -28,7 +28,7 @@
 </head>
 
 <body>
-	<header id="header" class="header" data-header-type="white">
+	<header id="header" class="header">
 		<h1>
 			<a href="/" class="logo">
 				<span class="blind">Test Logo</span>
@@ -107,6 +107,7 @@
 		<div class="intro">
 			<div class="bg"></div>
 			<div class="intro-text">
+				<div class="text-bg"></div>
 				<h2 class="title">
 					<p class="split">Creative Web Publisher</p>
 					<p class="split">4년간의 웹 퍼블리싱 여정과 함께</p>
@@ -114,26 +115,31 @@
 				</h2>
 			</div>
 		</div>
-		<section class="sec sec1">
+		<section id="about" class="sec">
 			<div class="bg"></div>
 			<div class="inner">
-				<p class="split">
-					안녕하세요! <br>
-					저는 4년차 퍼블리셔 주다운입니다.
-				</p>
-				<p class="split">
-					CSS와 JavaScript를 활용한 동적 모션을 좋아하고 <br class="pc">
-					코딩을 쉽고, 재밌게 남다르게 표현하는 걸 좋아합니다.				
-				</p>
-				<p class="split">
-					언제나 최신동향을 따라가려 노력하며, <br class="pc">
-					배운것은 나눠야 한다는 주의를 가지고 있습니다.
-				</p>
-				<p class="split">
-					저는 제 일을 좋아하며, 좋아하니까 즐기게 되고 더 잘하고 싶어집니다.<br class="pc">
-					최근에 컴포넌트 단위의 유지보수에 관심이 많아서<br class="pc">
-					React, Nodejs를 공부중에 있습니다.
-				</p>
+				<div class="about__text">
+					<p class="split">
+						안녕하세요! <br>
+						저는 4년차 퍼블리셔 주다운입니다.
+					</p>
+					<p class="split">
+						CSS와 JavaScript를 활용한 동적 모션을 좋아하고 <br class="pc">
+						코딩을 쉽고, 재밌게 남다르게 표현하는 걸 좋아합니다.				
+					</p>
+					<p class="split">
+						언제나 최신동향을 따라가려 노력하며, <br class="pc">
+						배운것은 나눠야 한다는 주의를 가지고 있습니다.
+					</p>
+					<p class="split">
+						저는 제 일을 좋아하며, 좋아하니까 즐기게 되고 더 잘하고 싶어집니다.<br class="pc">
+						최근에 컴포넌트 단위의 유지보수에 관심이 많아서<br class="pc">
+						React, Nodejs를 공부중에 있습니다.
+					</p>
+				</div>
+				<div class="about__img">
+					<img src="/images/main/profil.jpg" alt="about">
+				</div>
 			</div>
 		</section>
 		<section class="sec"></section>
@@ -141,90 +147,6 @@
 		<section class="sec"></section>
 		<canvas id="canvas"></canvas>
 	</main>
-	<footer id="footer" class="footer">
-		<div class="inner">
-			<div class="content-top">
-				<div class="sitemap">
-					<article>
-						<dl>
-							<dt><a href="javascript:">Menu 1</a></dt>
-							<dd><a href="#">Sub Menu 1-1</a></dd>
-							<dd><a href="#">Sub Menu 1-2</a></dd>
-							<dd><a href="#">Sub Menu 1-3</a></dd>
-							<dd><a href="#">Sub Menu 1-4</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 1-5</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 1-6</a></dd>
-						</dl>
-					</article>
-					<article>
-						<dl>
-							<dt><a href="javascript:">Menu 2</a></dt>
-							<dd><a href="#">Sub Menu 2-1</a></dd>
-							<dd><a href="#">Sub Menu 2-2</a></dd>
-							<dd><a href="#">Sub Menu 2-3</a></dd>
-							<dd><a href="#">Sub Menu 2-4</a></dd>
-							<dd><a href="#">Sub Menu 2-5</a></dd>
-							<dd><a href="#">Sub Menu 2-6</a></dd>
-							<dd><a href="#">Sub Menu 2-7</a></dd>
-							<dd><a href="#">Sub Menu 2-8</a></dd>
-						</dl>
-					</article>
-					<article>
-						<dl>
-							<dt><a href="javascript:">Menu 3</a></dt>
-							<dd class="w-100"><a href="#">Sub Menu 3-1</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 3-2</a></dd>
-						</dl>
-					</article>
-					<article>
-						<dl>
-							<dt><a href="javascript:">Menu 4</a></dt>
-							<dd class="w-100"><a href="#">Sub Menu 4-1</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 4-2</a></dd>
-						</dl>
-					</article>
-					<article>
-						<dl>
-							<dt><a href="javascript:">Menu 5</a></dt>
-							<dd class="w-100"><a href="#">Sub Menu 5-1</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 5-2</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 5-3</a></dd>
-							<dd class="w-100"><a href="#">Sub Menu 5-4</a></dd>
-						</dl>
-					</article>
-				</div>
-				<div class="con-right">
-					<div class="phone"><a href="tel:0000000000">000-0000-0000</a></div>
-					<ul class="footer-link">
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li class="active"><a href="#">Link 3</a></li>
-					</ul>
-					<ul class="footer-sns">
-						<li><a href="javascript:" title="새창으로 열림" target="_blank"><i class="icon icon-youtube"></i></a></li>
-						<li><a href="javascript:" title="새창으로 열림" target="_blank"><i class="icon icon-kakao"></i></a></li>
-						<li><a href="javascript:" title="새창으로 열림" target="_blank"><i class="icon icon-instagram"></i></a></li>
-						<li><a href="javascript:" title="새창으로 열림" target="_blank"><i class="icon icon-facebook"></i></a></li>
-						<li><a href="javascript:" title="새창으로 열림" target="_blank"><i class="icon icon-linkedin"></i></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="content-bottom">
-				<div class="logo-box">
-					<img src="/common/images/logo.png" alt="Test Logo">
-				</div>
-				<p class="copyright">©<span id="copyYear">2024</span> Test Company.</p>
-				<div class="site-wrap">
-					<button type="button" class="btn-site">Family Sites</button>
-					<div class="ico ico-arrow-drop"><span class="hide">Arrow</span></div>
-					<ul class="familyLink">
-						<li><a href="#" target="_blank" title="새창으로 열림">Family Site 1</a></li>
-						<li><a href="#" target="_blank" title="새창으로 열림">Family Site 2</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>
 </body>
 <script>
 	const initCircleLayout = () => {
@@ -235,6 +157,7 @@
 			guideCircle: document.querySelector('.guide-circle'),
 			articles: document.querySelectorAll('.guide-circle article'),
 			textBoxs: document.querySelector('.intro-text'),
+			textBg: document.querySelector('.intro-text .text-bg'),
 			split: document.querySelectorAll('.intro-text .split'),
 		});
 		
@@ -242,7 +165,7 @@
 		const createAppearMaskEffect = (progress) => {
 			const config = {
 				blockCount: 30,
-				staggerFactor: 2
+				staggerFactor: 1
 			};
 
 			const blockWidth = 100 / config.blockCount;
@@ -331,11 +254,12 @@
 		};
 
 		function initScrollAnimation() {
-			const { intro, bg, guideCircle, articles, textBoxs, split, sec1 } = getElements();
+			const { intro, bg, guideCircle, articles, textBoxs, split, sec1, textBg } = getElements();
 			const tl = gsap.timeline();
 			split.forEach(item => {
 				gsap.set(item.querySelectorAll('.word'), { autoAlpha: 0, y: 0 });
 			});
+			gsap.set(textBg, { scale: 1.4, rotate: 10 });
 			const totalDuration = 8;
 			const segmentDuration = totalDuration / 3;
 			const staggerTime = 0.05;
@@ -344,6 +268,7 @@
 			lenis.stop();
 			
 			tl.to(split[0].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro')
+				.to(textBg, { scale: 1, rotate: 0, duration: totalDuration }, 'intro')
 				.to(split[0].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration - 1))
 				.to(split[1].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + segmentDuration)
 				.to(split[1].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration * 2 - 1))

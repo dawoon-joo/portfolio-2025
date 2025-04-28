@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* 퍼오고나서 지우기 ===== */
-.sec { height: 100vh; background: lightcoral;}
+.sec { height: 100vh; background-color: linear-gradient(0deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)),linear-gradient(180deg,#e5e5e5,#f3f3f3 79.17%,#e2e2e2);}
 /* 퍼오고나서 지우기 ===== */
 :root {
   --primary-color: #000;
@@ -11,7 +11,7 @@
   --bg-sub-color: #f7f7f7;
 }
 .wrap { position: relative;}
-.inner { max-width: 1500px; margin: 0 auto; width: 90%; }
+.inner { max-width: 1300px; margin: 0 auto; width: 90%; }
 .inner.large { max-width: 1610px;}
 .inner-left { padding-left: calc(max((100vw - 1500px) / 2, 5vw)) !important;}
 .inner-right { padding-right: calc(max((100vw - 1500px) / 2, 5vw)) !important;}
