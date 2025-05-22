@@ -20,6 +20,7 @@
 	<script src="/common/js/lenis.min.js"></script>
 	<script src="/common/js/swiper.min.js"></script>
 	<script src="/common/js/jquery-3.7.1.min.js"></script>
+	<script src="/common/js/matter.js"></script>
 	<script src="/common/js/main.js"></script>
 	<script src="/common/js/sub.js"></script>
 	<script src="/common/js/device.js"></script>
@@ -194,14 +195,20 @@
 			</div>
 		</section>
 		<section id="portfolio" class="sec">
-			<div class="cube-container">
-				<div class="cube">
-					<div class="face front"></div>
-					<div class="face back"></div>
-					<div class="face right"></div>
-					<div class="face left"></div>
-					<div class="face top"></div>
-					<div class="face bottom"></div>
+			<div class="portfolio-wrap">
+				<div class="cube-container">
+					<div class="cube">
+						<div class="face front">
+							<canvas id="portfolio-skills"></canvas>
+						</div>
+						<div class="face back"></div>
+						<div class="face right">
+							<h3 class="heading">SKILLS</h3>
+						</div>
+						<div class="face left"></div>
+						<div class="face top"></div>
+						<div class="face bottom"></div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -211,7 +218,128 @@
 <script>
 	window.addEventListener('DOMContentLoaded', ()=>{
 		// initCircleLayout();
+		gsapMotion();
 	});
+	const portfolioMotion = (triggerClass, isMobile) => {
+		const section = document.querySelector(triggerClass);
+		const cube = section.querySelector('.cube');
+		let matterInitialized = false;
+		const tl = gsap.timeline();
+		ScrollTrigger.create({
+			trigger: section,
+			start: 'top top',
+			end: 'bottom bottom',
+			markers: true,
+			scrub: 1,
+			animation: tl
+		});
+		gsap.set(cube, { rotateY: -90 });
+		tl.addLabel('motion1', "+=0");
+		tl.to(cube, { rotateY: 0,
+			onUpdate: function() {
+				const progress = this.progress();
+				if (progress >= 0.3 && !matterInitialized) {
+					initMatterJS();
+					matterInitialized = true;
+				}
+			}
+		}, 'motion1');
+		tl.addLabel('motion2', "+=0");
+		tl.to(cube, { rotateX: 90 }, 'motion2');
+	}
+	const initMatterJS = () => {
+		// module aliases
+		const Engine = Matter.Engine;
+		const Render = Matter.Render;
+		const Runner = Matter.Runner;
+		const Bodies = Matter.Bodies;
+		const Composite = Matter.Composite;
+	
+		// create an engine
+		const engine = Engine.create();
+	
+		// 기존 렌더러 코드를 제거하고 캔버스를 사용하도록 변경
+		const render = Render.create({
+			canvas: document.getElementById('portfolio-skills'),
+			engine: engine,
+			options: {
+				width: document.querySelector('.face.front').offsetWidth,
+				height: document.querySelector('.face.front').offsetHeight,
+				wireframes: false,
+				background: 'transparent'
+			}
+		});
+	
+		// 박스 크기와 위치를 캔버스 크기에 맞게 조정
+		const canvasWidth = document.querySelector('.face.front').offsetWidth;
+		const canvasHeight = document.querySelector('.face.front').offsetHeight;
+	
+		// 스킬 아이콘 생성 함수
+		const createSkillIcon = (x, y, imagePath) => {
+			return Bodies.rectangle(x, y, 50, 50, { 
+				render: { 
+					sprite: {
+						texture: imagePath,
+						xScale: 0.5,
+						yScale: 0.5
+					}
+				},
+				restitution: 0.7,
+				friction: 0.001,
+				frictionAir: 0.01
+			});
+		};
+		
+		// 스킬 이미지 경로 배열
+		const skillImages = [
+			'/images/main/html.png',
+			'/images/main/css.png',
+			'/images/main/js.png',
+			'/images/main/sass.png',
+			'/images/main/xd.png',
+			'/images/main/figma.png',
+			'/images/main/react.png',
+			'/images/main/git.png',
+			'/images/main/gitlab.png',
+			'/images/main/photoshop.png',
+			'/images/main/illustrator.png',
+			'/images/main/php.png',
+		];
+		
+		// 랜덤 위치 생성 (겹치지 않게)
+		const skills = [];
+		for (let i = 0; i < 30; i++) {
+				const img = skillImages[i % skillImages.length];
+				const x = Math.random() * (canvasWidth - 100) + 50;
+				const y = -100 - (i * 30); // 위에서부터 30px 간격으로 생성
+				
+				skills.push(createSkillIcon(x, y, img));
+		}
+		// 경계벽은 유지
+		const leftWall = Bodies.rectangle(-10, canvasHeight/2, 20, canvasHeight * 2, { 
+				isStatic: true,
+				render: { fillStyle: 'transparent' }
+		});
+		const rightWall = Bodies.rectangle(canvasWidth + 10, canvasHeight/2, 20, canvasHeight * 2, { 
+				isStatic: true,
+				render: { fillStyle: 'transparent' }
+		});		
+		// 바닥 생성
+		const ground = Bodies.rectangle(canvasWidth/2, canvasHeight + 10, canvasWidth, 20, { 
+				isStatic: true,
+				render: { fillStyle: '#333' }
+		});
+		
+		// 모든 요소를 월드에 추가 (천장 제외)
+		Composite.add(engine.world, [...skills, ground, leftWall, rightWall]);
+	
+		// 렌더러 실행
+		Render.run(render);
+	
+		// 러너 생성 및 실행
+		const runner = Runner.create();
+		Runner.run(runner, engine);
+	};
 	const initCircleLayout = () => {
 		const getElements = () => ({
 			intro: document.querySelector('.intro'),
@@ -355,6 +483,18 @@
 		initScrollAnimation();
 		window.addEventListener('resize', reset);
 	}
+	const gsapMotion = () => {
+		let mm = gsap.matchMedia();
+	
+		mm.add({
+			isMobile: "(max-width: 767px)",
+			isDesktop: "(min-width: 768px)"
+		}, (context) => {
+			let { isMobile, isDesktop } = context.conditions;
+	
+			portfolioMotion('#portfolio', isMobile);
+		});
+	}
 </script>
-
+<script src="/common/js/noise.js"></script>
 </html>

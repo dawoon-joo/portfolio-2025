@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* 퍼오고나서 지우기 ===== */
-.sec { height: 100vh; background-color: linear-gradient(0deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)),linear-gradient(180deg,#e5e5e5,#f3f3f3 79.17%,#e2e2e2);}
+.sec { height: 100vh;}
 /* 퍼오고나서 지우기 ===== */
 :root {
   --primary-color: #000;

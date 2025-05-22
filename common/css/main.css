@@ -1,3 +1,5 @@
+main { background: linear-gradient(0deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)),linear-gradient(180deg,#e5e5e5,#f3f3f3 79.17%,#e2e2e2);}
+
 .intro { width: 100%; height: 100vh; position: absolute; top: 0; left: 0; z-index: 10; background-position: center; background-size: cover; -webkit-mask-image: linear-gradient(90deg, var(--mask-section)); mask-image: linear-gradient(90deg, var(--mask-section));}
 .intro .bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;}
 .intro-text { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; text-align: center; -webkit-mask-image: linear-gradient(90deg, var(--mask-section)); mask-image: linear-gradient(90deg, var(--mask-section)); color: #fff; overflow: hidden;}
@@ -23,12 +25,14 @@
 #career .career-item .career-desc { font-size: 20px; font-weight: 500; margin-bottom: 20px;}
 #career .career-item .career-tag { display: flex; gap: 20px; margin-top: auto;}
 
-.cube-container { width: 40vw; height: 26vw; perspective: 1200px; position: relative; margin: 100px auto;}
-.cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s; transform: scale(0.68); }
-.face { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center;}
-.front {transform: translateZ(20vw);background-color: rgba(255, 0, 0, 1); }
-.back { transform: rotateX(180deg) rotate(180deg) translateZ(20vw); background-color: rgba(0, 255, 0, 1);}
-.right { transform: rotateY(90deg) translateZ(20vw); background-color: rgba(0, 0, 255, 1);}
-.left { transform: rotateY(-90deg) translateZ(20vw); background-color: rgba(255, 255, 0, 1); }
-.top { transform: rotateX(90deg) translateZ(20vw); background-color: rgba(255, 0, 255, 1); display: none;}
-.bottom { width: 40vw; height: 40vw; transform: rotateX(-90deg) translateZ(6vw); background-color: #000; position: relative;}
+#portfolio { position: relative; height: 500vh;}
+#portfolio .portfolio-wrap { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center;}
+#portfolio .cube-container { width: 26vw; height: 18vw; perspective: 1200px; position: relative; margin: 100px auto;}
+#portfolio .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d;}
+#portfolio .face { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;}
+#portfolio .front {transform: translateZ(13vw);background-color: rgba(70, 11, 100, 1);}
+#portfolio .back { transform: rotateX(180deg) rotate(180deg) translateZ(13vw); background-color: rgba(0, 255, 0, 1);}
+#portfolio .right { transform: rotateY(90deg) translateZ(13vw); background-color: rgba(0, 0, 255, 1);}
+#portfolio .left { transform: rotateY(-90deg) translateZ(13vw); background-color: rgba(255, 255, 0, 1); }
+#portfolio .top { transform: rotateX(90deg) translateZ(13vw); background-color: rgba(255, 0, 255, 1); display: none;}
+#portfolio .bottom { width: 26vw; height: 26vw; transform: rotateX(-90deg) translateZ(5vw); background-color: #000; position: relative;}
