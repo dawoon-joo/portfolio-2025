@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>원근감 텍스트 효과</title>
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .sec {
+      height: 500vh; /* 섹션 높이 500vh로 설정 */
+      width: 100%;
+      position: relative;
+    }
+    
+    #globe-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <section class="sec">
+    <div id="globe-container"></div>
+  </section>
+  
+  <!-- Three.js 라이브러리 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- GSAP 라이브러리 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <!-- Lenis 스크롤 라이브러리 -->
+  <script src="lenis.min.js"></script>
+  
+  <!-- 부드러운 스크롤 설정 (외부 파일) -->
+  <script src="smooth-scroll.js"></script>
+  
+  <script>
+    // 3D 텍스트 효과 메인 클래스
+    class TextGlobe {
+      constructor(options = {}) {
+        // 기본 옵션 설정
+        this.options = {
+          container: '#globe-container',
+          globeRadius: 1.57,
+          textItems: [
+            "금성아트", "아이옴진", "아트앤컬쳐", "김종훈", "픽셀플러스", 
+            "코드플로", "플랜티넷", "두산밥캣코리아", "케이엔제이", "현대파이프", 
+            "니즈", "HLB", "리치디바인파트너", "리치디바인컨설팅", "인터엑스", 
+            "키움인베스트먼트",
+          ],
+          ...options
+        };
+        
+        // Three.js 변수 초기화
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.earth = null;
+        
+        // 초기화 실행
+        this.init();
+      }
+      
+      init() {
+        // Scene 설정
+        this.scene = new THREE.Scene();
+        
+        // Camera 설정
+        this.camera = new THREE.PerspectiveCamera(
+          80, 
+          window.innerWidth / window.innerHeight,
+          0.1, 
+          1000
+        );
+        this.camera.position.z = 2.4;
+        
+        // Renderer 설정
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setClearColor(0x000000, 0);
+        this.renderer.domElement.style.position = 'absolute';
+        this.renderer.domElement.style.top = '0';
+        this.renderer.domElement.style.left = '0';
+        this.renderer.domElement.style.width = '100%';
+        this.renderer.domElement.style.height = '100%';
+        this.renderer.domElement.style.zIndex = '1';
+        
+        document.querySelector(this.options.container).appendChild(this.renderer.domElement);
+        
+        // 조명 설정
+        this.scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(5, 3, 5);
+        this.scene.add(pointLight);
+        
+        // 지구본 생성
+        this.createGlobe();
+        
+        // 텍스트 추가
+        this.addTextToGlobe();
+        
+        // GSAP ScrollTrigger 설정
+        gsap.registerPlugin(ScrollTrigger);
+        this.setupScrollAnimation();
+        
+        // 애니메이션 시작 및 이벤트 리스너 등록
+        this.animate();
+        window.addEventListener('resize', this.onWindowResize.bind(this));
+      }
+      
+      // 지구본 생성 메서드
+      createGlobe() {
+        const earthGeometry = new THREE.SphereGeometry(this.options.globeRadius, 64, 64);
+        const earthMaterial = new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          transparent: true,
+          opacity: 0, // 완전 투명
+          wireframe: false
+        });
+        
+        this.earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        this.earth.rotation.x = Math.PI / 2; // 텍스트가 하단에 위치하도록 초기 회전
+        this.scene.add(this.earth);
+      }
+      
+      // 스크롤 애니메이션 설정
+      setupScrollAnimation() {
+        ScrollTrigger.create({
+          trigger: ".sec",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          onUpdate: (self) => {
+            // 스크롤 진행도에 따른 회전 계산
+            const scrollProgress = self.progress;
+            const maxRotation = Math.PI; // 최대 180도 회전
+            const rotationAmount = Math.min(scrollProgress * maxRotation, maxRotation);
+            
+            // 초기 위치(90도)에서 회전 적용
+            this.earth.rotation.x = Math.PI / 2 - rotationAmount;
+          }
+        });
+      }
+      
+      // 3D 텍스트 추가 함수
+      addTextToGlobe() {
+        this.options.textItems.forEach((text, index) => {
+          // 텍스트 위치 계산
+          const angle = (index / (this.options.textItems.length - 1)) * Math.PI * 0.5 + Math.PI * 0.25;
+          
+          // 텍스트를 캔버스에 그리기
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const fontSize = 100; // 폰트 해상도
+          const fontFamily = 'Arial, 맑은 고딕, sans-serif';
+          
+          // 텍스트 크기 측정을 위한 폰트 설정
+          ctx.font = `bold ${fontSize}px ${fontFamily}`;
+          const textMetrics = ctx.measureText(text);
+          
+          // 텍스트 크기에 맞게 캔버스 크기 조정 (패딩 포함)
+          const padding = 24;
+          const textWidth = textMetrics.width + padding * 2;
+          const textHeight = fontSize * 1.5;
+          
+          canvas.width = textWidth;
+          canvas.height = textHeight;
+          
+          // 다시 폰트 설정 (캔버스 리사이즈 후 컨텍스트 리셋됨)
+          ctx.fillStyle = '#ffffff';
+          ctx.font = `bold ${fontSize}px ${fontFamily}`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+          
+          // 텍스처 생성
+          const texture = new THREE.CanvasTexture(canvas);
+          texture.needsUpdate = true;
+          
+          // 종횡비 계산
+          const aspectRatio = textWidth / textHeight;
+          
+          // 기준 높이 (모든 텍스트 높이는 동일하게 유지)
+          const baseHeight = 0.125;
+          const baseWidth = baseHeight * aspectRatio;
+          
+          // 텍스트 메시 생성 - 텍스트 길이에 맞게 너비 조정
+          const planeGeometry = new THREE.PlaneGeometry(baseWidth, baseHeight);
+          const planeMaterial = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            // depthTest: false, // 깊이 테스트 비활성화로 항상 보이게 함
+            depthWrite: false,
+            side: THREE.DoubleSide
+          });
+          
+          const textMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+          textMesh.renderOrder = 10000; // 높은 렌더 순서
+          
+          // 텍스트 위치 계산 및 설정
+          const y = Math.cos(angle) * 1.4;
+          const radius = this.options.globeRadius;
+          const xzRadius = Math.sqrt(radius * radius - y * y);
+          const z = xzRadius + 0.05; // 약간 앞으로 이동
+          
+          textMesh.position.set(0, y, z);
+          textMesh.lookAt(0, 0, 0);
+          textMesh.rotateY(Math.PI);
+          textMesh.rotateX(-Math.PI * 0.02);
+          
+          this.earth.add(textMesh);
+        });
+      }
+      
+      // 애니메이션 함수
+      animate = () => {
+        requestAnimationFrame(this.animate);
+        this.renderer.render(this.scene, this.camera);
+      }
+      
+      // 창 크기 변경 대응
+      onWindowResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // 화면 비율에 따라 카메라 위치 조정
+        const aspect = window.innerWidth / window.innerHeight;
+        this.camera.position.z = aspect < 1 ? 2.8 : 2.4;
+      }
+    }
+    
+    // 앱 초기화
+    window.addEventListener('load', () => {
+      // 3D 텍스트 글로브 초기화
+      const textGlobe = new TextGlobe();
+    });
+  </script>
+</body>
+</html>

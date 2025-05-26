@@ -11,9 +11,9 @@ main { background: linear-gradient(0deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)),l
 
 
 #about > .inner { display: flex; align-items: center; height: 100%;}
-#about .about-text { font-size: 24px; font-weight: 600; flex: 1;}
+#about .about-text { font-size: 24px; font-weight: 600; flex: 0 0 50%;}
 #about .about-text .split + .split { margin-top: 20px;}
-#about .about-img { text-align: center;}
+#about .about-img { text-align: center; flex: 1;}
 #about .about-img img { max-height: 450px; width: auto; transform: rotate(-5deg);}
 
 
@@ -25,14 +25,27 @@ main { background: linear-gradient(0deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)),l
 #career .career-item .career-desc { font-size: 20px; font-weight: 500; margin-bottom: 20px;}
 #career .career-item .career-tag { display: flex; gap: 20px; margin-top: auto;}
 
-#portfolio { position: relative; height: 500vh;}
+#portfolio { position: relative; height: 1000vh;}
 #portfolio .portfolio-wrap { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center;}
 #portfolio .cube-container { width: 26vw; height: 18vw; perspective: 1200px; position: relative; margin: 100px auto;}
-#portfolio .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d;}
+#portfolio .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform; transform: translateZ(0);}
 #portfolio .face { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;}
 #portfolio .front {transform: translateZ(13vw);background-color: rgba(70, 11, 100, 1);}
 #portfolio .back { transform: rotateX(180deg) rotate(180deg) translateZ(13vw); background-color: rgba(0, 255, 0, 1);}
 #portfolio .right { transform: rotateY(90deg) translateZ(13vw); background-color: rgba(0, 0, 255, 1);}
 #portfolio .left { transform: rotateY(-90deg) translateZ(13vw); background-color: rgba(255, 255, 0, 1); }
 #portfolio .top { transform: rotateX(90deg) translateZ(13vw); background-color: rgba(255, 0, 255, 1); display: none;}
-#portfolio .bottom { width: 26vw; height: 26vw; transform: rotateX(-90deg) translateZ(5vw); background-color: #000; position: relative;}
+#portfolio .bottom { width: 26vw; height: 26vw; transform: rotateX(-90deg) translateZ(5vw); background-color: #000; position: relative; overflow: hidden;}
+#portfolio .noise-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 2;}
+#portfolio #portfolio-noise { position: absolute; top: 0; left: 0; width: 100%; height: 100%; scale: 1.1; z-index: 1;}
+
+
+#globe-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+  cursor: default;
+}

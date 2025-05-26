@@ -1,110 +1,135 @@
-class NoiseCanvas {
-  constructor(container, options = {}) {
-      // 기본 옵션
-      this.options = {
-          opacity: options.opacity || 0.2,
-          zIndex: options.zIndex || 10,
-          colorMin: options.colorMin || 0,
-          colorMax: options.colorMax || 255,
-          threshold: options.threshold || 200,
-          frameRate: options.frameRate || 30
-      };
-      
-      // 캔버스 생성
-      this.canvas = document.createElement('canvas');
-      this.canvas.id = 'noise-canvas';
-      this.canvas.style.position = 'absolute';
-      this.canvas.style.top = '0';
-      this.canvas.style.left = '0';
-      this.canvas.style.width = '100%';
-      this.canvas.style.height = '100%';
-      this.canvas.style.pointerEvents = 'none'; 
-      this.canvas.style.zIndex = this.options.zIndex;
-      this.canvas.style.opacity = this.options.opacity;
-      
-      // 컨테이너에 캔버스 추가
-      container.appendChild(this.canvas);
-      
-      // 컨텍스트 설정
-      this.ctx = this.canvas.getContext('2d');
-      
-      // 애니메이션 변수
-      this.frame = 0;
-      this.isAnimating = false;
-      this.lastFrameTime = 0;
-      this.frameInterval = 1000 / this.options.frameRate;
-      
-      // 초기화
-      this.resize();
-      window.addEventListener('resize', () => this.resize());
-  }
-  
-  resize() {
-      const container = this.canvas.parentElement;
-      this.canvas.width = container.offsetWidth;
-      this.canvas.height = container.offsetHeight;
-  }
-  
-  generateNoise() {
-      const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
-      const data = imageData.data;
-      
-      for (let i = 0; i < data.length; i += 4) {
-          const noise = Math.floor(Math.random() * 255);
-          const cell = Math.floor((i / 4) / this.canvas.width) % 2 + Math.floor((i / 4) % this.canvas.width) % 2;
-          
-          const value = (noise < this.options.threshold) ? this.options.colorMin : this.options.colorMax;
-          
-          data[i] = value;     // R
-          data[i+1] = value;   // G
-          data[i+2] = value;   // B
-          data[i+3] = cell * 10 + 5;
-      }
-      
-      this.ctx.putImageData(imageData, 0, 0);
-  }
-  
-  animate(timestamp) {
-      if (!this.isAnimating) return;
-      
-      if (!timestamp) timestamp = 0;
-      const elapsed = timestamp - this.lastFrameTime;
-      
-      if (elapsed > this.frameInterval) {
-          this.lastFrameTime = timestamp - (elapsed % this.frameInterval);
-          this.frame++;
-          this.generateNoise();
-      }
-      
-      requestAnimationFrame((ts) => this.animate(ts));
-  }
-  
-  start() {
-      if (!this.isAnimating) {
-          this.isAnimating = true;
-          this.animate();
-      }
-      return this;
-  }
-  
-  stop() {
-      this.isAnimating = false;
-      return this;
-  }
-  
-  setOpacity(value) {
-      this.canvas.style.opacity = value;
-      this.options.opacity = value;
-      return this;
-  }
-}
+// 물결 노이즈 캔버스 효과 구현
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('portfolio-noise');
+    if (!canvas) return;
 
-// 사용 방법
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('.portfolio-wrap .face.bottom');
-  const noiseEffect = new NoiseCanvas(container, {
-      opacity: 1,
-      threshold: 20  // 노이즈 강도 조절
-  });
-  noiseEffect.start();
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let animationFrameId;
+    let backgroundImage = new Image();
+    backgroundImage.src = '/images/main/profil.jpg';
+    
+    // 이미지 로드 실패 시 대체 이미지 설정
+    backgroundImage.onerror = function() {
+        // 이미지 로드 실패 시 대체 이미지 또는 그라데이션 사용
+        console.warn('배경 이미지 로드 실패');
+        backgroundImage = null;
+    };
+    
+    // 캔버스 크기 설정 함수
+    function resizeCanvas() {
+        const parent = canvas.parentElement;
+        width = canvas.width = parent.offsetWidth;
+        height = canvas.height = parent.offsetHeight;
+    }
+    
+    // 애니메이션 루프
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        // 물결 노이즈 배경 그리기
+        drawWaveNoise();
+        
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    // 물결 노이즈 배경 그리기 함수
+    function drawWaveNoise() {
+        const time = Date.now() * 0.001;
+        
+        // 배경 이미지 그리기
+        if (backgroundImage && backgroundImage.complete) {
+            // 이미지 캔버스에 맞게 그리기 (cover 스타일로 꽉 채우기)
+            const imgRatio = backgroundImage.width / backgroundImage.height;
+            const canvasRatio = width / height;
+            
+            let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
+            
+            if (imgRatio > canvasRatio) {
+                // 이미지가 더 넓은 경우
+                drawHeight = height;
+                drawWidth = height * imgRatio;
+                offsetX = (width - drawWidth) / 2;
+            } else {
+                // 이미지가 더 좁은 경우
+                drawWidth = width;
+                drawHeight = width / imgRatio;
+                offsetY = (height - drawHeight) / 2;
+            }
+            
+            ctx.drawImage(backgroundImage, offsetX, offsetY, drawWidth, drawHeight);
+        } else {
+            // 이미지가 없을 경우 그라데이션 배경 사용
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, 'rgba(20, 30, 80, 0.8)');
+            gradient.addColorStop(1, 'rgba(60, 90, 180, 0.8)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+        }
+        
+        // 물결 효과에 사용할 이미지 데이터를 가져옴
+        let imageData;
+        try {
+            imageData = ctx.getImageData(0, 0, width, height);
+        } catch(e) {
+            console.error('이미지 데이터 가져오기 실패:', e);
+        }
+        
+        // 물결 디스토션 효과 적용
+        if (imageData) {
+            const distortedImageData = ctx.createImageData(width, height);
+            const d1 = imageData.data;
+            const d2 = distortedImageData.data;
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    // 물결 효과에 의한 변위 계산 (디스토션만 남김)
+                    const distX = Math.sin(y * 0.03 + time) * 5; 
+                    const distY = Math.cos(x * 0.03 + time) * 3.5;
+                    
+                    const srcX = Math.floor(x + distX);
+                    const srcY = Math.floor(y + distY);
+                    
+                    // 경계 체크
+                    if (srcX >= 0 && srcX < width && srcY >= 0 && srcY < height) {
+                        const i = (y * width + x) * 4;
+                        const srcI = (srcY * width + srcX) * 4;
+                        
+                        // 픽셀 복사
+                        d2[i] = d1[srcI];     // R
+                        d2[i+1] = d1[srcI+1]; // G
+                        d2[i+2] = d1[srcI+2]; // B
+                        d2[i+3] = d1[srcI+3]; // A
+                    }
+                }
+            }
+            
+            // 디스토션 이미지 데이터 적용
+            ctx.putImageData(distortedImageData, 0, 0);
+        }
+    }
+    
+    // 이벤트 리스너 설정
+    window.addEventListener('resize', resizeCanvas);
+    
+    // 초기화 및 애니메이션 시작
+    resizeCanvas();
+    animate();
+    
+    // 큐브 회전 시 노이즈 효과 표시
+    const cube = document.querySelector('.cube');
+    if (cube) {
+        const observer = new MutationObserver((mutations) => {
+        });
+        
+        observer.observe(cube, { attributes: true });
+    }
+    
+    // 페이지 나가면 애니메이션 정지
+    window.addEventListener('beforeunload', () => {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    });
 });

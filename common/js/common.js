@@ -44,7 +44,7 @@ function handleLenis(isDesktop) {
 
   if (isDesktop) {
     lenis = new Lenis({
-      duration: 0.6,
+      duration: 1.1,
       infinite: false,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       gestureOrientation: "vertical",

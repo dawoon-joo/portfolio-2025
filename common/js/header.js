@@ -43,7 +43,7 @@ class Header {
     window.addEventListener('scroll', () => {
       if (!this.option.ticking) {
         window.requestAnimationFrame(() => {
-          this.toggleHeader();
+          // this.toggleHeader();
           this.stickyHeader();
           this.option.ticking = false;
         });
