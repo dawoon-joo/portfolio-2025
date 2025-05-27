@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>Document</title>
 	<link rel="stylesheet" href="/common/css/font/font.css">
 	<link rel="stylesheet" href="/common/css/swiper.min.css">
@@ -29,7 +29,7 @@
 </head>
 
 <body>
-	<!-- <header id="header" class="header">
+	<header id="header" class="header">
 		<h1>
 			<a href="/" class="logo">
 				<span class="blind">Test Logo</span>
@@ -103,7 +103,7 @@
 				</a>
 			</div>
 		</div>
-	</header> -->
+	</header>
 	<main>
 		<div class="intro" style="display: none;">
 			<div class="bg"></div>
@@ -235,7 +235,7 @@
 		let matterInitialized = false;
 		const tl = gsap.timeline();
 		const tl2 = gsap.timeline();
-		gsap.set(cube, { scaleX: 0, z: '-20vw' });
+		gsap.set(cube, { translateZ: '-20vw', scale: 0 });
 		ScrollTrigger.create({
 			trigger: section,
 			start: 'top center',
@@ -244,7 +244,7 @@
 			scrub: 1,
 			animation: tl2
 		});
-		tl2.to(cube, { scaleX: 1, z: 0 });
+		tl2.to(cube, { scale: 1, translateZ: 0 });
 		ScrollTrigger.create({
 			trigger: section,
 			start: 'top top',
@@ -263,7 +263,7 @@
 			onUpdate: function() {
 				const progress = this.progress();
 				if (progress >= 0.05 && !matterInitialized) {
-					initMatterJS();
+					// initMatterJS();
 					matterInitialized = true;
 				}
 			}
