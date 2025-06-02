@@ -2,31 +2,35 @@ main { background: linear-gradient(0deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)),l
 
 .intro { width: 100%; height: 100vh; position: absolute; top: 0; left: 0; z-index: 10; background-position: center; background-size: cover; -webkit-mask-image: linear-gradient(90deg, var(--mask-section)); mask-image: linear-gradient(90deg, var(--mask-section));}
 .intro .bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;}
-.intro-text { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; text-align: center; -webkit-mask-image: linear-gradient(90deg, var(--mask-section)); mask-image: linear-gradient(90deg, var(--mask-section)); color: #fff; overflow: hidden;}
-.intro-text::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg,rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 1) 100%);}
-.intro-text .text-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(/images/main/info-bg4.jpg) no-repeat center/cover; z-index: -1;}
+.intro-text { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; text-align: center; -webkit-mask-image: linear-gradient(90deg, var(--mask-section)); mask-image: linear-gradient(90deg, var(--mask-section)); color: #000; overflow: hidden; background: #fff;}
+/* .intro-text::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg,rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 1) 100%);} */
+/* .intro-text .text-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url(/images/main/info-bg4.jpg) no-repeat center/cover; z-index: -1;} */
 .intro-text .split { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: max-content;}
 
 
 
 
-#about > .inner { display: flex; align-items: center; height: 100%;}
-#about .about-text { font-size: 24px; font-weight: 600; flex: 0 0 50%;}
-#about .about-text .split + .split { margin-top: 20px;}
-#about .about-img { text-align: center; flex: 1;}
-#about .about-img img { max-height: 450px; width: auto; transform: rotate(-5deg);}
+#about {place-content: center; height: 100vh;}
+#about .heading { margin-bottom: 100px;}
+#about .about-wrap {display: flex;align-items: center;height: 100%;gap: 80px;padding-left: 10%;}
+#about .about-area {font-size: 20px;font-weight: 600;/* flex: 0 0 50%; */}
+#about .about-area .split + .split { margin-top: 20px;}
+#about .about-img { text-align: center; border-radius: 25px; overflow: hidden; width: max-content;}
+#about .about-img img { max-height: 450px; width: auto; display: block;}
 
-
-#career .career-area + .career-area { margin-top: 100px;}
-#career .career-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100% , 450px), 1fr)); gap: 50px;}
-#career .career-title { margin-bottom: 40px;}
+#career { padding-bottom: 120px;}
+#career .career-wrap { padding-left: 10%; display: flex; gap: 50px;}
+#career .career-area { width: calc(50% - 25px);}
+#career .career-list {display: grid;grid-template-columns: repeat(auto-fill, minmax(min(100% , 450px), 1fr));gap: 50px;/* padding-left: 10%; */}
+#career .career-title {margin-bottom: 20px;}
 #career .career-item { display: flex; flex-direction: column;}
-#career .career-item .career-sbj { margin-bottom: 20px;}
-#career .career-item .career-desc { font-size: 20px; font-weight: 500; margin-bottom: 20px;}
-#career .career-item .career-tag { display: flex; gap: 20px; margin-top: auto;}
+#career .career-item .career-sbj {margin-bottom: 10px;}
+#career .career-item .career-desc {font-size: 18px;font-weight: 500;margin-bottom: 20px;}
+#career .career-item .career-tag {display: flex;gap: 20px;margin-top: auto;font-size: 16px;}
 
 #portfolio { position: relative; height: 1000vh;}
 #portfolio .portfolio-wrap { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 0 !important;}
+#portfolio .portfolio-title { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 1; font-size: 24px; font-weight: 600; gap: 10px;}
 #portfolio .cube-container { width: 26vw; height: 18vw; perspective: 1200px; position: relative; margin: 100px auto;}
 #portfolio .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform;}
 #portfolio .face { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;}

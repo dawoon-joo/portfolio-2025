@@ -29,83 +29,8 @@
 </head>
 
 <body>
-	<header id="header" class="header">
-		<h1>
-			<a href="/" class="logo">
-				<span class="blind">Test Logo</span>
-			</a>
-		</h1>
-		<div class="gnb">
-			<nav class="nav">
-				<ul class="depth1" data-lenis-prevent>
-					<li>
-						<a href="#">Menu 1</a>
-						<ul class="depth2">
-							<li><a href="#">Sub Menu 1-1</a></li>
-							<li><a href="#">Sub Menu 1-2</a></li>
-							<li><a href="#">Sub Menu 1-3</a></li>
-							<li><a href="#">Sub Menu 1-4</a></li>
-							<li><a href="#">Sub Menu 1-5</a></li>
-							<li><a href="#">Sub Menu 1-6</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">Menu 2</a>
-						<ul class="depth2">
-							<li><a href="#">Sub Menu 2-1</a></li>
-							<li><a href="#">Sub Menu 2-2</a></li>
-							<li><a href="#">Sub Menu 2-3</a></li>
-							<li><a href="#">Sub Menu 2-4</a></li>
-							<li><a href="#">Sub Menu 2-5</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">Menu 3</a>
-						<ul class="depth2">
-							<li><a href="#">Sub Menu 3-1</a></li>
-							<li><a href="#">Sub Menu 3-2</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">Menu 4</a>
-						<ul class="depth2">
-							<li><a href="#">Sub Menu 4-1</a></li>
-							<li><a href="#">Sub Menu 4-2</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">Menu 5</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="close">
-				<a href="javascript:">
-					<span class="circle"></span>
-					<span class="blind">Close Menu</span>
-				</a>
-			</div>
-		</div>
-		<div class="header-right">
-			<div class="header-language">
-				<button class="current" aria-pressed="false"><span class="text">KR</span></button>
-				<ul>
-					<li><a href="javascript:lang_chg('ko')">KR</a></li>
-					<li><a href="javascript:lang_chg('en')">EN</a></li>
-					<li><a href="javascript:lang_chg('cn')">CN</a></li>
-				</ul>
-			</div>
-			<div class="hamburger">
-				<a href="javascript:">
-					<span class="bar"></span>
-					<span class="bar"></span>
-					<span class="bar"></span>
-					<span class="blind">Open Menu</span>
-				</a>
-			</div>
-		</div>
-	</header>
 	<main>
-		<div class="intro" style="display: none;">
+		<div class="intro">
 			<div class="bg"></div>
 			<div class="intro-text">
 				<div class="text-bg"></div>
@@ -117,29 +42,33 @@
 			</div>
 		</div>
 		<section id="about" class="sec">
-			<div class="bg"></div>
 			<div class="inner">
-				<div class="about-text">
-					<p class="split">
-						안녕하세요! <br>
-						저는 4년차 퍼블리셔 주다운입니다.
-					</p>
-					<p class="split">
-						CSS와 JavaScript를 활용한 동적 모션을 좋아하고 <br class="pc">
-						코딩을 쉽고, 재밌게 남다르게 표현하는 걸 좋아합니다.				
-					</p>
-					<p class="split">
-						언제나 최신동향을 따라가려 노력하며, <br class="pc">
-						배운것은 나눠야 한다는 주의를 가지고 있습니다.
-					</p>
-					<p class="split">
-						저는 제 일을 좋아하며, 좋아하니까 즐기게 되고 더 잘하고 싶어집니다.<br class="pc">
-						최근에 컴포넌트 단위의 유지보수에 관심이 많아서<br class="pc">
-						React, Nodejs를 공부중에 있습니다.
-					</p>
-				</div>
-				<div class="about-img">
-					<img src="/images/main/profil.jpg" alt="about">
+				<h2 class="heading">ABOUT ME</h2>
+				<div class="about-wrap">
+					<div class="about-area">
+						<div class="about-img">
+							<img src="/images/main/profil.jpg" alt="about">
+						</div>
+					</div>
+					<div class="about-area">
+						<p class="split">
+							안녕하세요! <br>
+							저는 4년차 퍼블리셔 주다운입니다.
+						</p>
+						<p class="split">
+							CSS와 JavaScript를 활용한 동적 모션을 좋아하고 <br class="pc">
+							코딩을 쉽고, 재밌게 남다르게 표현하는 걸 좋아합니다.				
+						</p>
+						<p class="split">
+							언제나 최신동향을 따라가려 노력하며, <br class="pc">
+							배운것은 나눠야 한다는 주의를 가지고 있습니다.
+						</p>
+						<p class="split">
+							저는 제 일을 좋아하며, 좋아하니까 즐기게 되고 더 잘하고 싶어집니다.<br class="pc">
+							최근에 컴포넌트 단위의 유지보수에 관심이 많아서<br class="pc">
+							React, Nodejs를 공부중에 있습니다.
+						</p>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -147,7 +76,7 @@
 			<div class="inner">
 				<div class="career-wrap">
 					<div class="career-area">
-						<h3 class="career-title">커리어</h3>
+						<h3 class="career-title">WORK EXPERIENCE</h3>
 						<div class="career-list">
 							<article class="career-item">
 								<h4 class="career-sbj">(주)서로커뮤니케이션</h4>
@@ -173,7 +102,7 @@
 						</div>
 					</div>
 					<div class="career-area">
-						<h3 class="career-title">교육</h3>
+						<h3 class="career-title">EDUCATION</h3>
 						<div class="career-list">
 							<article class="career-item">
 								<h4 class="career-sbj">디코드컴퓨터학원</h4>
@@ -196,6 +125,10 @@
 		</section>
 		<section id="portfolio" class="sec">
 			<div class="portfolio-wrap">
+				<div class="portfolio-title">
+					<span>RECENT</span>
+					<span>PROJECT</span>
+				</div>
 				<div class="cube-container">
 					<div class="cube">
 						<div class="face front">
@@ -205,7 +138,7 @@
 							<h3 class="heading">SKILLS</h3>
 						</div>
 						<div class="face right">
-							<canvas id="portfolio-skills"></canvas>
+							<!-- <canvas id="portfolio-skills"></canvas> -->
 						</div>
 						<div class="face left"></div>
 						<div class="face top"></div>
@@ -223,31 +156,39 @@
 </body>
 <script>
 	window.addEventListener('DOMContentLoaded', ()=>{
-		// initCircleLayout();
+		initCircleLayout();
 		gsapMotion();
 	});
 	const portfolioMotion = (triggerClass, isMobile) => {
 		const textGlobe = new TextGlobe();
 		const earth = textGlobe.getEarth();
 		const section = document.querySelector(triggerClass);
+		const portfolioWrap = section.querySelector('.portfolio-wrap');
 		const cube = section.querySelector('.cube');
 		const bg = section.querySelector('.noise-bg');
+		const projectWrap = section.querySelector('.portfolio-title');
+    const projectText = projectWrap.querySelectorAll('span');
 		let matterInitialized = false;
 		const tl = gsap.timeline();
 		const tl2 = gsap.timeline();
+		gsap.set(projectWrap, { y: '100%' });
 		gsap.set(cube, { translateZ: '-20vw', scale: 0 });
-		ScrollTrigger.create({
-			trigger: section,
+		const trigger1 = ScrollTrigger.create({
+			trigger: portfolioWrap,
 			start: 'top center',
-			end: 'top 10%',
+			end: '+=200%',
 			markers: true,
 			scrub: 1,
-			animation: tl2
+			animation: tl2,
+			id: 'trigger1'
 		});
-		tl2.to(cube, { scale: 1, translateZ: 0 });
+		tl2.to(projectWrap, { y: 0, duration: 1})
+			.to(projectText[0], { duration:2, x: () => -(window.innerWidth/2 - projectText[0].offsetWidth - 60) + 'px',})
+			.to(projectText[1], { duration:2, x: () => (window.innerWidth/2 - projectText[1].offsetWidth - 60) + 'px',}, '<')
+			.to(cube, { duration:1, scale: 1, translateZ: 0 }, '<+=0.5');
 		ScrollTrigger.create({
 			trigger: section,
-			start: 'top top',
+			start: () => `+=${trigger1.end - trigger1.start}`,
 			end: 'bottom bottom',
 			markers: true,
 			scrub: 1,
@@ -385,6 +326,10 @@
 			textBoxs: document.querySelector('.intro-text'),
 			textBg: document.querySelector('.intro-text .text-bg'),
 			split: document.querySelectorAll('.intro-text .split'),
+			about: document.querySelector('#about'),
+			aboutHeading: document.querySelector('#about .heading'),
+			aboutText: document.querySelectorAll('#about .split'),
+			aboutImg: document.querySelector('#about .about-img img'),
 		});
 		
 		// 등장 효과 (이미지가 보이게 됨)
@@ -480,7 +425,7 @@
 		};
 
 		function initScrollAnimation() {
-			const { intro, bg, guideCircle, articles, textBoxs, split, sec1, textBg } = getElements();
+			const { intro, bg, guideCircle, articles, textBoxs, split, sec1, textBg, about, aboutHeading, aboutText, aboutImg } = getElements();
 			const tl = gsap.timeline();
 			split.forEach(item => {
 				gsap.set(item.querySelectorAll('.word'), { autoAlpha: 0, y: 0 });
@@ -492,9 +437,10 @@
 
 			document.body.style.overflow = 'hidden';
 			lenis.stop();
-			
+			gsap.set(aboutHeading, { autoAlpha: 0, y: 50 });
+			gsap.set(aboutText, { autoAlpha: 0, y: 50 });
+			gsap.set(aboutImg, { autoAlpha: 0 });
 			tl.to(split[0].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro')
-				.to(textBg, { scale: 1, rotate: 0, duration: totalDuration }, 'intro')
 				.to(split[0].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration - 1))
 				.to(split[1].querySelectorAll('.word'), { autoAlpha: 1, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + segmentDuration)
 				.to(split[1].querySelectorAll('.word'), { autoAlpha: 0, y: 0, ease: 'power2.inOut', stagger: staggerTime }, 'intro+=' + (segmentDuration * 2 - 1))
@@ -503,10 +449,14 @@
 						await runMaskAnimation(textBoxs, createDisappearMaskEffect, 'ltr');
 						gsap.delayedCall(0.5, async () => { 
 							await runMaskAnimation(intro, createDisappearMaskEffect, 'rtl');
-							// intro.remove();
+							intro.remove();
+
 						});
 					}
 				}, 'intro+=' + (segmentDuration * 2))
+				.to(aboutImg, { autoAlpha: 1, duration: 1, ease: 'power2.in' }, 'intro+=' + (segmentDuration * 3.5))
+				.to(aboutHeading, { autoAlpha: 1, y: 0, duration: 1, ease: 'power2.inOut'}, '<+=0.5') 
+				.to(aboutText, { autoAlpha: 1, stagger: 0.1, y: 0, duration: 0.5 }, '<+=0.5')
 		}
 
 		function reset() {

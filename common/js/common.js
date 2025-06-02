@@ -11,7 +11,7 @@ let lenis, rafId;
 
 document.addEventListener('DOMContentLoaded', () => {
   const device = new Device();
-  const header = new Header();
+  // const header = new Header();
   gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
   handleLenis(!device.isTablet && !device.isMobile);
   language();
